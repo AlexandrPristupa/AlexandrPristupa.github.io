@@ -32,8 +32,6 @@ export const getMessages = () => {
           });
         });
 
-      console.log(messages);
-
       res(messages)
     })
   })
