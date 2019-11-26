@@ -7,45 +7,60 @@ import {
   sendMessage
 } from './config/firebase';
 
-// import firebase from 'firebase/app';
-// import 'firebase/auth';
-// import 'firebase/database';
-
-// import { config } from './config/config';
-
 import Header from './components/Header';
 import MessagesList from './components/MessagesList';
 import Form from './components/Form';
 
 import Button from '@material-ui/core/Button';
 
-import './App.css';
+import './App.scss';
 
-const App = ({ signInWithGoogle }) => {
-  const [user, setUser] = useState(null);
+const App = ({ signInWithGoogle, signOut, user }) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
 
-  useEffect(() => {
+  const getMessagesFromFirebase = async () => {
+    const messages = await getMessages();
 
-    (async () => {
-      const messages = await getMessages();
-
-      setMessages(messages);
-    })()
-
-  }, []);
-
-  async function handleSignIn() {
-    const res =  await signInWithGoogle();
-
-    setUser(res.additionalUserInfo.profile);
+    setMessages(messages);
   };
 
+  useEffect(() => {
+    getMessagesFromFirebase();
+  }, []);
+
+  const handleSignIn = () => signInWithGoogle();
+
+  const handleSignOut  = async () => signOut();
+
+  const handleSendMessage = event => {
+     event.preventDefault();
+
+     if (!message) {
+        return;
+     }
+
+     const { displayName, photoURL } = user.providerData[0];
+
+     sendMessage({
+       text: message,
+       name: displayName,
+       picture: photoURL
+     });
+
+     getMessagesFromFirebase();
+
+     setMessage('');
+  };
+
+  const handleOnChenge = event => setMessage(event.target.value);
+
+  const isAuth = !!user;
+  
   return (
     <div className="App">
       <Header>
-        {!user && (
+        {!isAuth && (
           <Button 
             color="inherit"
             onClick={handleSignIn}
@@ -54,90 +69,32 @@ const App = ({ signInWithGoogle }) => {
           </Button>
         )}
 
-        {user && (
+        {isAuth && (
           <Button 
             color="inherit"
-            onClick={handleSignIn}
+            onClick={handleSignOut}
           >
             Sign out
-          </Button>
+          </Button>          
         )}
       </Header>
 
-      {user && (
-
+      {isAuth && (
         <>
           <MessagesList 
             messages={messages}   
           />
-          
-        
+
           <Form
-            onSendMessage={this.handleSendMessage}
-            onChange={this.handleOnChenge}
+            onSendMessage={handleSendMessage}
+            onChange={handleOnChenge}
             value={message}
           />
         </>
       )}
     </div>
   );
-} 
-
-//   handleSignOut = async () => {
-//     const res = await this.props.signOut();
-
-//     console.log(res);
-
-//     this.setState({
-//       user: null
-//     })
-//   }
-
-//   handleSendMessage = event => {
-//     event.preventDefault();
-
-//     const { message } = this.state;
-//     const { name, picture } = this.state.user;
-
-//     sendMessage({ text: message, name, picture }) 
-//   }
-
-//   handleOnChenge = event => {
-//     this.setState({
-//       message: event.target.value
-//     })
-//   }
-
-//   render() {
-//     const { user, message, messages } = this.state;
-
-//     return (
-//       <div className="App">
-//         <Header onSignIn={this.handleSignIn}>
-//           <Button color="inherit" onClick={this.handleSignIn}>Sign in</Button>
-//         </Header>
-
-//         {user && (
-
-//           <>
-//             <MessagesList 
-//               messages={messages}   
-//             />
-            
-          
-//             <Form
-//               onSendMessage={this.handleSendMessage}
-//               onChange={this.handleOnChenge}
-//               value={message}
-//             />
-//           </>
-//         )}
-//       </div>
-//     );
-//   }
-// }
-
-
+}
 
 export default withFirebaseAuth({
   providers,

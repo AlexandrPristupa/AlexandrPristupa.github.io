@@ -1,4 +1,5 @@
 import React from 'react';
+import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
@@ -8,21 +9,33 @@ const Form = ({
   onChange,
   value
 }) => (
-  <form noValidate autoComplete="off" onSubmit={onSendMessage}>
-    <TextField
-      label="Message"
-      fullWidth margin="normal"
-      value={value}
-      onChange={onChange}
-    />
-      <Button
-        variant="contained"
-        color="primary"
-        endIcon={<Icon>send</Icon>}
-        onClick={onSendMessage}
-      >
-        Send
-      </Button>
+  <form
+    noValidate
+    autoComplete="off"
+    onSubmit={onSendMessage}
+    className="Message-form"
+  >
+    <Grid container>
+      <Grid container item xs={10}>
+        <TextField
+          fullWidth
+          label="Message"
+          margin="normal"
+          value={value}
+          onChange={onChange}
+        />
+      </Grid>
+      <Grid container item xs={2}>
+        <Button
+          variant="contained"
+          color="primary"
+          endIcon={<Icon>send</Icon>}
+          onClick={onSendMessage}
+        >
+          Send
+        </Button>
+      </Grid>
+    </Grid>
   </form>
 )
 
