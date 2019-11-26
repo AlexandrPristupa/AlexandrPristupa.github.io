@@ -1,0 +1,1 @@
+{"version":3,"sources":["App.scss"],"names":[],"mappings":"AAAA,mBAEI,eAAgB,CAChB,cAAe,CACf,QAAS,CACT,UAAW,CALf,mBASI,kBAAmB","file":"main.d43b530e.chunk.css","sourcesContent":[".App {\n  .Message-form {\n    background: #FFF;\n    position: fixed;\n    bottom: 0;\n    width: 100%;\n  }\n\n  .Message-list {\n    margin-bottom: 50px;\n  }\n}"]}
