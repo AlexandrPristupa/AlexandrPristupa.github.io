@@ -16,7 +16,7 @@ const Form = ({
     className="Message-form"
   >
     <Grid container>
-      <Grid container item xs={10}>
+      <Grid container xs={10}>
         <TextField
           fullWidth
           label="Message"
@@ -25,7 +25,7 @@ const Form = ({
           onChange={onChange}
         />
       </Grid>
-      <Grid container item xs={2}>
+      <Grid container xs={2}>
         <Button
           variant="contained"
           color="primary"

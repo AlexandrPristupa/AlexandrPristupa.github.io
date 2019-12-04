@@ -32,14 +32,14 @@ export const getMessages = () => {
           });
         });
 
-      res(messages)
-    })
-  })
+      res(messages);
+    });
+  });
 };
 
 export const sendMessage = message => {
   firebase
     .database()
     .ref("messages/")
-    .push(message)
+    .push(message);
 };
